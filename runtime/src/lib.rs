@@ -39,6 +39,9 @@ pub use frame_support::{
 		constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight, WEIGHT_PER_SECOND},
 	},
 };
+pub mod impls;
+// use impls::{CurrencyToVoteHandler};
+
 
 /// Importing a template pallet
 pub use template;
@@ -251,6 +254,45 @@ impl sudo::Trait for Runtime {
 	type Event = Event;
 	type Call = Call;
 }
+// parameter_types! {
+// 	pub const ProposalBond: Permill = Permill::from_percent(5);
+// 	pub const ProposalBondMinimum: Balance = 1 * DOLLARS;
+// 	pub const SpendPeriod: BlockNumber = 1 * DAYS;
+// 	pub const Burn: Permill = Permill::from_percent(50);
+// }
+// impl pallet_treasury::Trait for Runtime {
+// 	type Currency = balances::Module<Runtime>;
+// 	type ApproveOrigin = collective::EnsureMembers<_4, AccountId, CouncilCollective>;
+// 	type RejectOrigin = collective::EnsureMembers<_2, AccountId, CouncilCollective>;
+// 	type Event = Event;
+// 	type ProposalRejection = ();
+// 	type ProposalBond = ProposalBond;
+// 	type ProposalBondMinimum = ProposalBondMinimum;
+// 	type SpendPeriod = SpendPeriod;
+// 	type Burn = Burn;
+// }
+// parameter_types! {
+// 	pub const SessionsPerEra: sp_staking::SessionIndex = 6;
+// 	pub const BondingDuration: staking::EraIndex = 24 * 28;
+// 	pub const SlashDeferDuration: staking::EraIndex = 24 * 7; // 1/4 the bonding duration.
+// 	pub const RewardCurve: &'static PiecewiseLinear<'static> = &REWARD_CURVE;
+// }
+// impl pallet_staking::Trait for Runtime {
+// 	type Currency = balances::Module<Runtime>;
+// 	type Time = timestamp;
+// 	type CurrencyToVote = CurrencyToVoteHandler,
+// 	type RewardRemainder = Treasury;
+// 	type Event = Event;
+// 	type Slash = Treasury; // send the slashed funds to the treasury.
+// 	type Reward = (); // rewards are minted from the void
+// 	type SessionsPerEra = SessionsPerEra;
+// 	type BondingDuration = BondingDuration;
+// 	type SlashDeferDuration = SlashDeferDuration;
+// 	/// A super-majority of the council can cancel the slash.
+// 	type SlashCancelOrigin = collective::EnsureProportionAtLeast<_3, _4, AccountId, CouncilCollective>;
+// 	type SessionInterface = Self;
+// 	type RewardCurve = RewardCurve;
+// }
 
 /// Used for the module template in `./template.rs`
 impl template::Trait for Runtime {
@@ -271,7 +313,9 @@ construct_runtime!(
 		Balances: balances::{Module, Call, Storage, Config<T>, Event<T>},
 		TransactionPayment: transaction_payment::{Module, Storage},
 		Sudo: sudo::{Module, Call, Config<T>, Storage, Event<T>},
-		// Used for the module template in `./template.rs`
+		// Treasury: pallet_treasury::{Module, Call, Storage, Config, Event<T>},
+		// Staking: pallet_staking::{default, OfflineWorker},
+		// // Used for the module template in `./template.rs`
 		TemplateModule: template::{Module, Call, Storage, Event<T>},
 	}
 );

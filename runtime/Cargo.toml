@@ -30,6 +30,12 @@ git = 'https://github.com/paritytech/substrate.git'
 tag = 'v2.0.0-rc3'
 version = '2.0.0-rc3'
 
+[dependencies.pallet-staking]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'v2.0.0-rc3'
+version = '2.0.0-rc3'
+
 [dependencies.grandpa]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
@@ -148,12 +154,25 @@ package = 'pallet-timestamp'
 tag = 'v2.0.0-rc3'
 version = '2.0.0-rc3'
 
+[dependencies.pallet-treasury]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+tag = 'v2.0.0-rc3'
+version = '2.0.0-rc3'
+
+
 [dependencies.transaction-payment]
 default-features = false
 git = 'https://github.com/paritytech/substrate.git'
 package = 'pallet-transaction-payment'
 tag = 'v2.0.0-rc3'
 version = '2.0.0-rc3'
+
+[dependencies.node-primitives]
+default-features = false
+git = 'https://github.com/paritytech/substrate.git'
+version = '2.0.0-rc3'
+
 [build-dependencies.wasm-builder-runner]
 git = 'https://github.com/paritytech/substrate.git'
 package = 'substrate-wasm-builder-runner'
@@ -199,4 +218,7 @@ std = [
     'timestamp/std',
     'transaction-payment/std',
     'template/std',
+    'node-primitives/std',
+    'pallet-staking/std',
+    'pallet-treasury/std',
 ]
