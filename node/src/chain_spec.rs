@@ -128,7 +128,7 @@ fn testnet_genesis(initial_authorities: Vec<(AuraId, GrandpaId)>,
 		}),
 		pallet_session: Some(SessionConfig {
 			keys: initial_authorities.iter().map(|x| {
-				(ConvertInto(x.0.clone()), ConvertInto(x.0.clone()), session_keys(
+				(x.0.clone(), x.0.clone(), session_keys(
 					x.0.clone(),
 					x.1.clone(),
 				))
