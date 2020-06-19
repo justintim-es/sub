@@ -9,9 +9,10 @@
 /// For more guidance on Substrate FRAME, see the example pallet
 /// https://github.com/paritytech/substrate/blob/master/frame/example/src/lib.rs
 
-use frame_support::{decl_module, decl_storage, decl_event, decl_error, dispatch};
+use frame_support::{decl_module, decl_storage, decl_event, decl_error, dispatch, weights::Weight};
 use frame_system::{self as system, ensure_signed};
-
+use sp_std::vec::Vec;
+use sp_runtime::traits::Convert;
 #[cfg(test)]
 mod mock;
 
@@ -36,6 +37,7 @@ decl_storage! {
 		// Here we are declaring a StorageValue, `Something` as a Option<u32>
 		// `get(fn something)` is the default getter which returns either the stored `u32` or `None` if nothing stored
 		Something get(fn something): Option<u32>;
+		Validators get(fn validators): Vec<T::AccountId>;
 	}
 }
 
@@ -105,5 +107,36 @@ decl_module! {
 				},
 			}
 		}
+	}
+}
+impl<T: Trait> pallet_session::ShouldEndSession<T::BlockNumber> for Module<T> {
+	fn should_end_session(_now: T::BlockNumber) -> bool {
+		// Self::flag()
+		true
+	}
+}
+impl<T: Trait> pallet_session::SessionManager<T::AccountId> for Module<T> {
+	fn new_session(new_index: u32) -> Option<Vec<T::AccountId>> {
+		Some(Self::validators())
+	}
+	fn end_session(end_index: u32) {
+
+	}
+	fn start_session(start_index: u32) {
+
+	}
+}
+impl<T: Trait> frame_support::traits::EstimateNextSessionRotation<T::BlockNumber> for Module<T> {
+	fn estimate_next_session_rotation(now: T::BlockNumber) -> Option<T::BlockNumber> {
+		Some(system::Module::<T>::block_number())
+	}
+	fn weight(_now: T::BlockNumber) -> Weight {
+		0
+	}
+}
+pub struct ValidatorOf<T>(sp_std::marker::PhantomData<T>);
+impl<T: Trait> Convert<T::AccountId, Option<T::AccountId>> for ValidatorOf<T> {
+	fn convert(account: T::AccountId) -> Option<T::AccountId> {
+		Some(account)
 	}
 }
